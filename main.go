@@ -135,7 +135,7 @@ func (h *HTTPHandler) AddDoctor(c *gin.Context) {
 // Update
 
 func (m *MySQLDatabase) UpdateDoctor(d *Doctor) error {
-	update_query := fmt.Sprintf("UPDATE Doctor SET Address='%s',City='%s',Phone='%s', Opening_time ='%s',Closing_time='%s',Fees %d, WHERE Id=%d", d.Address, d.City, d.Phone, d.Opening_time, d.Closing_time, d.Fees, d.ID)
+	update_query := fmt.Sprintf("UPDATE Doctor SET Address='%s',City='%s',Phone='%s', Opening_time ='%s',Closing_time='%s',Fees=%d WHERE Id=%d", d.Address, d.City, d.Phone, d.Opening_time, d.Closing_time, d.Fees, d.ID)
 	fmt.Println(update_query)
 	_, err := m.db.Exec(update_query)
 	return err
@@ -247,7 +247,7 @@ func (h *HTTPHandler) GetPatient(c *gin.Context) {
 // Update the patient details in the Database - UPDATE OPERATION
 
 func (m *MySQLDatabase) UpdatePatient(p *Patients) error {
-	update_query := fmt.Sprintf("UPDATE Patient SET Name='%s',Age=%d,Gender='%s',Address='%s',City='%s',Phone='%s',Diseases='%s',Selected_specialisation='%s',Patient_history='%s', WHERE Id=%d",
+	update_query := fmt.Sprintf("UPDATE Patient SET Name='%s',Age=%d,Gender='%s',Address='%s',City='%s',Phone='%s',Diseases='%s',Selected_specialisation='%s',Patient_history='%s' WHERE Id=%d",
 		p.Name, p.Age, p.Gender, p.Address, p.City, p.Phone, p.Disease, p.Selected_specialisation, p.Patient_history, p.ID)
 	fmt.Println(update_query)
 	_, err := m.db.Exec(update_query)
@@ -337,7 +337,7 @@ func sql_Patient_tabel_creation() {
 	Err(err)
 	// sql table creation
 
-	_, err = db.Exec("CREATE TABLE IF NOT EXISTS PATIENT(ID INT,Name VARCHAR(20),Gender VARCHAR(8),Address VARCHAR(255),City VARCHAR(20),State VARCHAR(20),Mobile_no VARCHAR(15))")
+	_, err = db.Exec("CREATE TABLE IF NOT EXISTS PATIENT(ID INT,Name VARCHAR(20),Age INT, Gender VARCHAR(8),Address VARCHAR(255),City VARCHAR(20,Phone VARCHAR(15),Disease VARCHAR(255),Selected_specialisation VARCHAR(50),Patient_history VARCHAR(255))")
 	Err(err)
 }
 
@@ -352,7 +352,7 @@ func main() {
 	}
 	defer db.db.Close()
 
-	handler := &HTTPHandler{}
+	handler := &HTTPHandler{db}
 
 	router := gin.Default()
 
